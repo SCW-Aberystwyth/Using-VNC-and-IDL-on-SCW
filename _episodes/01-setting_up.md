@@ -14,3 +14,4 @@ Check you have an SSH and VNC client installed. See [setup] for more details.
 
 `ssh a.<aber user id>@vnc.sunbird.swansea.ac.uk`
 
+{% include setup.md %}
