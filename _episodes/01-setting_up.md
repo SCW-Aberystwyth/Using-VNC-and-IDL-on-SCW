@@ -4,6 +4,8 @@ objectives:
 - "Install an SSH and VNC client"
 - "Check your Supercomputing Wales account is working"
 - "Connect to Supercomputing Wales via SSH"
+questions:
+- "How do we setup our environment"
 ---
 
 # Install Software
