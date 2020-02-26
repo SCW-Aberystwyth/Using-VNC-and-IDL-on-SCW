@@ -6,8 +6,9 @@ permalink: index.html  # Is the only page that doesn't follow the pattern /:path
 
 {% include gh_variables.html %}
 
+## Setting up
 
-please see [the setup instructions]({{ page.root }}{% link setup.md %}).
+Please see [the setup instructions]({{ page.root }}{% link setup.md %}).
 
 > ## Prerequisites
 > An account on Supercomputing Wales, apply via [https://my.supercomputing.wales](https://my.supercomputing.wales)
