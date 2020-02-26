@@ -4,6 +4,8 @@ title: Setup
 
 # Getting an SCW Account
 
+root version
+
 Go to https://my.supercomputing.wales
 
 # Installing required software
