@@ -2,9 +2,9 @@
 title: Setup
 ---
 
-# Getting an SCW Account
+# Getting a Supercomputing Wales Account
 
-root version
+You should have done this before coming to the workshop, its not an instant process!
 
 Go to https://my.supercomputing.wales
 

@@ -66,7 +66,8 @@ IDL> set_sunbird, ['sdo']
 % Compiled module: IMAGELIB.
 % IMAGELIB: Added system variable !IMAGE
 IDL> 
-
+~~~
+{: .bash}
 
 SSWIDL should now be configured. We can test this by using the example procedure:
 
