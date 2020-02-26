@@ -8,7 +8,7 @@ objectives:
 
 # Install Software
 
-Check you have an SSH and VNC client installed. See [setup] for more details.
+Check you have an SSH and VNC client installed. See  <a href="{{ relative_root_path }}{% link setup.md %}">Setup</a> for more details.
 
 # Test SSH
 
