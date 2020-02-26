@@ -1,171 +1,135 @@
 ---
-title: "Lesson Organization"
+title: "Running IDL programs"
 teaching: 10
 exercises: 0
 questions:
-- "How are the files in a lesson organized?"
 objectives:
-- "Explain overall organization of lesson files."
+- "Launch the IDL IDE on a compute node."
 keypoints:
-- "Auxiliary files are stored in the _layouts, _includes, and assets directories."
-- "The code of conduct, license, Makefile, and contribution guidelines should not be modified."
-- "The README, authors' list, and citation instructions must be updated for each lesson."
-- "The home page, reference guide, setup instructions, discussion page, and instructors' guide must be updated for each lesson."
-- "The Makefile stores commonly-used commands."
+- "IDL must be loaded through a module"
+- "We should run computationally intensive things on a compute node, not a login node."
+- "Where possible we should wrap things into batch jobs that can run without user intervention."
 ---
 
-Each lesson is made up of *episodes*, which are focused on a particular topic and
-include time for both teaching and exercises.
-The episodes of this lesson explain the tools we use to create lessons
-and the formatting rules those lessons must follow.
+# Loading software modules
 
-> ## Why "Episodes"?
->
-> We call the parts of lessons "episodes" because
-> every other term (like "topic") already has multiple meanings,
-> and because it encourages us to think of breaking up our lessons
-> into chunks that are about as long as a typical movie scene,
-> which is better for learning than long blocks without interruption.
-{: .callout}
+As there can be multiple versions of software installed on SCW a system of loadable modules let you choose which version to have. IDL versions 8.4 and 8.7 are both installed. Version 8.4 is a copy licensed to Aberystwyth and can only be run by certain Aberystwyth users. 8.7 is licensed to SCW and anybody can use it. 
 
-Our lessons need artwork,
-CSS style files,
-and a few bits of Javascript.
-We could load these from the web,
-but that would make offline authoring difficult.
-Instead, each lesson's repository is self-contained.
+## Listing available modules
 
-The diagram below shows how source files and directories are laid out,
-and how they are mapped to destination files and directories:
+~~~
+module avail
+~~~
+{: .bash}
 
-![Source and Destination Files]({{ page.root }}/fig/file-mapping.svg)
+or 
 
-> ## Collections
->
-> As described [earlier]({{ page.root }}/02-tooling/#collections),
-> files that appear as top-level items in the navigation menu are stored in the root directory.
-> Files that appear under the "extras" menu are stored in the `_extras` directory,
-> while lesson episodes are stored in the `_episodes` directory.
-{: .callout}
+~~~
+module av
+~~~
+{: .bash}
 
-## Helper Files
+This will produce a long list of available software modules.
 
-As is standard with [Jekyll][jekyll] sites,
-page layouts are stored in `_layouts`
-and snippets of HTML included by these layouts are stored in `_includes`.
-Each of these files includes a comment explaining its purpose.
+IDL is found in the `/apps/local/modules/languages` section near the bottom of this list.
 
-Authors do not have to specify that episodes use the `episode.html` layout,
-since that is set by the configuration file.
-Pages that authors create should have the `page` layout unless specified otherwise below.
+~~~
+----------------------------------------------------------------------------------- /apps/local/modules/languages ------------------------------------------------------------------------------------
+anaconda/2019.03       IDL/8.7                java/13                matlab/R2019b          perl/5.30.0            python/3.7.2-gnu-4.8.5
+IDL/8.4                java/11                matlab/R2019a          octave/5.1.0           python/2.7.16-gnu-8.1  python/3.7.2-gnu-8.1
+~~~
 
-The `assets` directory contains the CSS, Javascript, fonts, and image files
-used in the generated website.
-Authors should not modify these.
+## Loading the module
 
-# Standard Files
+We can load the default version (8.7) of IDL by running:
 
-When the lesson repository is first created,
-the initial author should create a `README.md` file containing
-a one-line explanation of the lesson's purpose.
+~~~
+module load IDL
+~~~
+{: .bash}
 
-The [lesson template]({{ site.template_repo }}) provides the following files
-which should *not* be modified:
+Or we can explicitly specify a version by doing:
 
-*   `CONDUCT.md`: the code of conduct.
-*   `LICENSE.md`: the lesson license.
-*   `Makefile`: commands for previewing the site, cleaning up junk, etc.
+~~~
+module load IDL/8.7
+~~~
+{: .bash}
 
-## Starter Files
 
-The `bin/lesson_initialize.py` script creates files that need to be customized for each lesson:
+## Seeing which modules are loaded
 
-`CONTRIBUTING.md`
-:   Contribution guidelines.
-    The `issues` and `repo` links at the bottom of the file must be changed
-    to match the URLs of the lesson:
-    look for uses of `FIXME`.
+The module list command shows which modules are loaded:
 
-`_config.yml`
-:   The [Jekyll][jekyll] configuration file.
-    This must be edited so that its links and other settings are correct for this lesson.
-    *   `carpentry` should be either "dc" (for Data Carpentry), "lc" (for Library Carpentry), or "swc" (for Software Carpentry).
-    *   `title` is the title of your lesson,
-        e.g.,
-        "Defence Against the Dark Arts".
-    *   `email` is the contact email address for the lesson.
+~~~
+$ module list
+Currently Loaded Modulefiles:
+  1) null      2) IDL/8.7
+~~~
+{: .bash}
 
-`CITATION`
-:   A plain text file explaining how to cite this lesson.
+## Unloading modules
 
-`AUTHORS`
-:   A plain text file listing the names of the lesson's authors.
+A single module can be unloaded with the `module unload` command or all modules can be unloaded with the `module purge` command.
 
-`index.md`
-:   The home page for the lesson.
-    1.  It must use the `lesson` layout.
-    2.  It must *not* have a `title` field in its [YAML][yaml] header.
-    3.  It must open with a few paragraphs of explanatory text.
-    4.  That introduction must be followed by a single `.prereq` blockquote
-        detailing the lesson's prerequisites.
-        (Setup instructions appear separately.)
-    5.  That must be followed by inclusion of `syllabus.html`,
-        which generates the syllabus for the lesson
-        from the metadata in its episodes.
+~~~
+$ module unload IDL
+$ module list
+Currently Loaded Modulefiles:
+  1) null
+~~~
+{: .bash}
 
-`reference.md`
-:   A reference guide for the lesson.
-    The template will automatically generate a summary of the episodes' key points.
-    1.  It must use the `reference` layout.
-    2.  Its title must be `"Reference"`.
-    3.  Its permalink must be `/reference/`.
-    4.  It should include a glossary, laid out as a description list.
-    5.  It may include other material as appropriate.
+# Running IDL
 
-`setup.md`
-:   Detailed setup instructions for the lesson.
-    Note that we usually divide setup instructions by platform,
-    e.g.,
-    include level-2 headings for Windows, macOS, and Linux
-    with instructions for each.
-    The [workshop template]({{ site.workshop_repo }})
-    links to the setup instructions for core lessons.
-    1.  It must use the `page` layout.
-    2.  Its title must be `"Setup"`.
-    3.  Its permalink must be `/setup/`.
-    4.  It should include whatever setup instructions are required.
+The standard command line version of IDL can be launched with the `idl` command (after loading the module).
 
-`_extras/about.md`
-:   General notes about this lesson.
-    This page includes brief descriptions of The Carpentries,
-    and is a good place to put institutional acknowledgments.
+~~~
+$ module load IDL
+$ idl
+IDL 8.7.2 (linux x86_64 m64).
+(c) 2019, Harris Geospatial Solutions, Inc.
 
-`_extras/discussion.md`
-:   General discussion of the lesson contents for learners who wish to know more:
-    This page normally includes links to further reading
-    and/or brief discussion of more advanced topics.
-    1.  It must use the `page` layout.
-    2.  Its title must be `"Discussion"`.
-    3.  Its permalink must be `/discuss/`.
-    4.  It may include whatever content the author thinks appropriate.
+Licensed for use by: University of Swansea
+License: MNT-5515312
+IDL> 
+~~~
+{: .bash}
 
-`_extra/figures.md` and `_includes/all_figures.html`
-:   Does nothing but include `_includes/all_figures.html`,
-    which is (re)generated by `make lesson-figures`.
-    This page displays all the images referenced by all of the episodes,
-    in order,
-    so that instructors can scroll through them while teaching.
+This has only launched on the login node and this should only be used for very quick and simple testing. 
 
-`_extras/guide.md`
-:   The instructors' guide for the lesson.
-    This page records tips and warnings from people who have taught the lesson.
-    1.  It must use the `page` layout.
-    2.  Its title must be `"Instructors' Guide"`.
-    3.  Its permalink must be `/guide/`.
-    4.  It may include whatever content the author thinks appropriate.
+Now lets allocate a node using the `salloc` command. 
 
-## Figures
+~~~
+$ salloc -n1 -t 0:10:0 --partition=development
+salloc: Granted job allocation 188375
+salloc: Waiting for resource configuration
+salloc: Nodes scs0121 are ready for job
+$ ssh scs0121
+Last login: Fri Mar 29 11:18:51 2019 from sl1
+[a.abc1@scs0121 ~]$ module load IDL
+[a.abc1@scs0121 ~]$ idl
+IDL 8.7.2 (linux x86_64 m64).
+(c) 2019, Harris Geospatial Solutions, Inc.
 
-All figures related with the lesson **must** be placed inside the directory `fig` at the root of the project.
+Licensed for use by: University of Swansea
+License: MNT-5515312
+IDL> 
+.
+.
+Do some work here
+.
+.
+IDL> exit
 
-{% include links.md %}
+[a.abc1@scs0121 ~]$ exit
+logout
+Connection to scs0121 closed.
+$ exit
+exit
+salloc: Relinquishing job allocation 188375
+$ 
+~~~
+{: .bash}
+
+
+
