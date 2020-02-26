@@ -2,6 +2,8 @@
 title: "A Solarsoft IDL example"
 objectives:
 - "Run an IDL program using the Solarsoft library"
+questions:
+- "How do we run IDL programs using the Solarsoft library"
 ---
 
 A simple set of example code to confirm that IDL and Solarsoft are functioning as expected is available from [https://gitlab.com/FaradaysGnomes/scw-idl-tutorial.git](Richard Grimes' gitlab page). 

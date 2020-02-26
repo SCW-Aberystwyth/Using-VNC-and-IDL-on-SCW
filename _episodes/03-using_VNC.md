@@ -3,7 +3,7 @@ title: "Using VNC"
 teaching: 10
 exercises: 0
 questions:
-- "How are pages published?"
+- "How do we use graphical applications on Supercomputing Wales?"
 objectives:
 - "Start your own VNC server"
 - "Connect to a VNC server using an SSH tunnel"

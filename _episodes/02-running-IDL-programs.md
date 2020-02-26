@@ -3,8 +3,10 @@ title: "Running IDL programs"
 teaching: 10
 exercises: 0
 questions:
+- "How do we run IDL programs on the command line?"
 objectives:
-- "Launch the IDL IDE on a compute node."
+- "Launch the IDL command line interface on a login node."
+- "Launch the IDL command line interface on a compute node."
 keypoints:
 - "IDL must be loaded through a module"
 - "We should run computationally intensive things on a compute node, not a login node."
